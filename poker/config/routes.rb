@@ -1,4 +1,6 @@
 Poker::Application.routes.draw do
+  
+  resources :tables, :only => ["show", "index"]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
