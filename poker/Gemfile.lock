@@ -71,6 +71,10 @@ GEM
       activesupport (= 3.2.2)
       bundler (~> 1.0)
       railties (= 3.2.2)
+    rails-erd (0.4.5)
+      activerecord (~> 3.0)
+      activesupport (~> 3.0)
+      ruby-graphviz (~> 0.9.18)
     railties (3.2.2)
       actionpack (= 3.2.2)
       activesupport (= 3.2.2)
@@ -82,6 +86,7 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     redis (2.2.2)
+    ruby-graphviz (0.9.21)
     sass (3.1.15)
     sass-rails (3.2.4)
       railties (~> 3.2.0)
@@ -110,6 +115,7 @@ DEPENDENCIES
   jquery-rails
   juggernaut
   rails (= 3.2.2)
+  rails-erd
   sass-rails (~> 3.2.3)
   sqlite3
   uglifier (>= 1.0.3)
