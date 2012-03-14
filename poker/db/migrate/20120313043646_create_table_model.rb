@@ -3,8 +3,8 @@ class CreateTableModel < ActiveRecord::Migration
     create_table :tables do |t|
 
       # game
-      t.string    :cards_on_table
-      t.string    :cards_in_deck
+      t.text      :cards_on_table
+      t.text      :cards_in_deck
       t.integer   :button,          :default => 0
       t.integer   :blind_amount
       t.integer   :tournament_id

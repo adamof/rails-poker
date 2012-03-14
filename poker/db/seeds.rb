@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+["Stefan", "Scott", "Masis", "Michael", "Laurent", "Matan", "Tri", "Milin"].each do |os|
+  Player.find_or_create_by_email os
+end
+
+Table.create!(:blind_amount => 10, :button => 1, :players => Player.all, 
+  :cards_on_table => ["5S", "3H", "KS", "QC", "JH"], 
+  :cards_in_deck => ["3S", "3S", "KC", "QS", "JS"])
+Pot.create(:amount => 300, :table => Table.last)
