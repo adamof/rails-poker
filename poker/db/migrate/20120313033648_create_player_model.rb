@@ -23,7 +23,8 @@ class CreatePlayerModel < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :players, :email,     :unique => true
+    # add it later, now it's a hassle
+    # add_index :players, :email,     :unique => true
   end
 
   def down

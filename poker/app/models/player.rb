@@ -8,5 +8,5 @@ class Player < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   belongs_to              :tournament
   belongs_to              :table
-  has_and_belongs_to_many :pots  
+  has_and_belongs_to_many :pots
 end
