@@ -1,6 +1,6 @@
 class TablesController < ApplicationController
   def index
-    @tables = Tables.all
+    @tables = Table.all
     render 'index'
   end
   def show
@@ -10,12 +10,15 @@ class TablesController < ApplicationController
     
   end
   def fold
-    
+    @table = Player.find(params[:id]).table
+    @table.save
+
+    render :nothing => true
   end
   def check
     
   end
-  def raise
+  # def raise
     
-  end
+  # end
 end

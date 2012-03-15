@@ -10,6 +10,8 @@ Poker::Application.routes.draw do
     get "/signup" => "players#new"
   end
   
+  match '/fold' => 'tables#fold'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

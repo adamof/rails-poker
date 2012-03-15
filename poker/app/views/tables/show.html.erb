@@ -62,6 +62,43 @@
     // jug2.subscribe("channel2", function(data){
     //   log("Got data: " + data);
     // });
+    
+
   </script>
+
+  <script type="text/javascript">
+    function fold() {
+      
+      var request = $.ajax({
+        url: "/fold",
+        type: "POST",
+        data: {id : 9},
+        dataType: "text"
+      });      
+    }
+    function check() {
+      
+      var request = $.ajax({
+        url: "/check",
+        type: "POST",
+        data: {id : 9},
+        dataType: "text"
+      });      
+    }
+    function raise() {
+      
+      var request = $.ajax({
+        url: "/raise",
+        type: "POST",
+        data: {id : 9, amount : 100},
+        dataType: "text"
+      });      
+    }
+  </script>
+
+  <%= link_to_function "Fold", "fold()" %>  
+  <%= link_to_function "Check", "check()" %>
+  <%= link_to_function "Raise", "raise()" %>
+
 </body>
 </html>
