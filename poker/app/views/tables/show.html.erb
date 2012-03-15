@@ -4,7 +4,7 @@
 <html>
 <head>
   <meta name="charset" content="utf-8">
-  <title>Juggernaut</title>
+  <title>Poker</title>
   <script src="application.js" type="text/javascript" charset="utf-8"></script>
   
   <style type="text/css" media="screen">
@@ -12,7 +12,7 @@
       margin: 1em 0;
     }
     
-    #log {
+    .log {
       padding: 5px;
       background: #CCC;
       height: 500px;
@@ -22,46 +22,51 @@
 </head>
 <body>
 
-  <h1>Juggernaut - Hello World!</h1>
+  <h1>Poker, lala!</h1>
   
-  <textarea id="log" readonly></textarea>
+  <textarea id="tableLog" class="log" readonly></textarea>
+  <textarea id="playerLog" class="log" readonly></textarea>
   
   <script type="text/javascript" charset="utf-8">
-    var logElement = document.getElementById("log");
+    var logElement = document.getElementById("tableLog");
     logElement.value = "";
-    var log = function(data){
+    var tableLog = function(data){
       logElement.value += (data + "\n");
     };
     
-    var jug = new Juggernaut;
-    // ({
-    //   secure: ('https:' == document.location.protocol),
-    //   host: document.location.hostname,
-    //   port: document.location.port || 80
-    // });
+    var channelJug = new Juggernaut;
     
-    jug.on("connect", function(){ log("Connected") });
-    jug.on("disconnect", function(){ log("Disconnected") });
-    jug.on("reconnect", function(){ log("Reconnecting") });
+   channelJug.on("connect", function(){ tableLog("Connected to table") });
+   channelJug.on("disconnect", function(){ tableLog("Disconnected") });
+   channelJug.on("reconnect", function(){ tableLog("Reconnecting") });
     
-    log("Subscribing to channel1");
+    tableLog("Subscribed to table <%= @table.id %> channel");
     
-    jug.subscribe("channel1", function(data){
-      log("Got data: " + data);
+   channelJug.subscribe("<%= @table.id %>", function(data){
+      tableLog("Got data: " + data);
       console.log(data);
+      console.log("table data ^");
     });
 
-    // var jug2 = new Juggernaut;
+    var playerId = <%= current_player.id %>
+
+    var playerLogElement = document.getElementById("playerLog");
+    playerLogElement.value = "";
+    var playerLog = function(data){
+      playerLogElement.value += (data + "\n");
+    };
+
+    var playerJug = new Juggernaut;
     
-    // jug2.on("connect", function(){ log("Connected 2") });
-    // jug2.on("disconnect", function(){ log("Disconnected 2") });
-    // jug2.on("reconnect", function(){ log("Reconnecting 2") });
+    playerJug.on("connect", function(){ playerLog("Connected to player channel") });
+    playerJug.on("disconnect", function(){ playerLog("Disconnected 2") });
+    playerJug.on("reconnect", function(){ playerLog("Reconnecting 2") });
     
-    // log("Subscribing to channel 2");
+    playerLog("Subscribing to player channel <%= @table.id %>/<%= current_player.id %>");
     
-    // jug2.subscribe("channel2", function(data){
-    //   log("Got data: " + data);
-    // });
+    playerJug.subscribe("<%= @table.id %>/<%= current_player.id %>", function(data){
+      playerLog("Got data: " + data);
+    });
     
 
   </script>
@@ -72,7 +77,7 @@
       var request = $.ajax({
         url: "/fold",
         type: "POST",
-        data: {id : 9},
+        data: {id : playerId},
         dataType: "text"
       });      
     }

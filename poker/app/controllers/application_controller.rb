@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   
   
   def after_sign_in_path_for(resource)
-    return 'tables' || root_path
+    return current_player.table
   end
   
   def after_sign_out_path_for(resource)

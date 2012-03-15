@@ -4,7 +4,7 @@ class TablesController < ApplicationController
     render 'index'
   end
   def show
-
+    @table = Table.find(params[:id])
   end
   def bet
     
@@ -18,7 +18,7 @@ class TablesController < ApplicationController
   def check
     
   end
-  # def raise
+  def raiseBet
     
-  # end
+  end
 end

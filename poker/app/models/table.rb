@@ -24,7 +24,8 @@ class Table < ActiveRecord::Base
 
 
     result = {"players" => players, "table" => table}
-    Juggernaut.publish("channel1", result)
+    # Juggernaut.publish("#{self.id}", result)
+    Juggernaut.publish("#{self.id}", self.changes.to_json)
 
   end
 
