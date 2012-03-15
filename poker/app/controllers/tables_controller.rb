@@ -1,6 +1,7 @@
 class TablesController < ApplicationController
   def index
-
+    @tables = Tables.all
+    render 'index'
   end
   def show
 

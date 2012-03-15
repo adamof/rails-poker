@@ -3,7 +3,13 @@ Poker::Application.routes.draw do
   devise_for :players
 
   resources :tables, :only => ["show", "index"]
-  resources :players
+  resources :players, :only => "new"
+  
+  as :players do
+    get "/signin" => "players#signin"
+    get "/signup" => "players#new"
+  end
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
