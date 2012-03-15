@@ -41,14 +41,15 @@ class TablesController < ApplicationController
     player.money = player.money - bet_amount.to_i
     player.save!
     
-    pots = player.pots
-    pot = Pot.new
-    max_players = -1
-    pots.each do |p|
-      if p.players.size > max_players
-        pot = p
-      end
-    end
+    pot = player.table.pots.first
+    # pots = player.pots
+    # pot = Pot.new
+    # max_players = -1
+    # pots.each do |p|
+    #   if p.players.size > max_players
+    #     pot = p
+    #   end
+    # end
     
     pot.amount = pot.amount + bet_amount.to_i
     pot.save!
@@ -60,15 +61,12 @@ class TablesController < ApplicationController
   end
   
   def deal
-    @table = Table.first
+    @table = Table.find(params[:id])
     players = @table.players
-    i = 0
     
     players.each do |p|
-      p.card_1 = "Card " + i.to_s
-      i += 1
-      p.card_2 = "Card " + i.to_s
-      i += 1
+      p.card_1 = "Card " + rand(52).to_s
+      p.card_2 = "Card " + rand(52).to_s
       p.save!
     end
     

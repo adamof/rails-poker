@@ -103,6 +103,7 @@
       var request = $.ajax({
         url: "/deal",
         type: "GET",
+        data: {id : <%= @table.id %>}
       });
     }
   </script>

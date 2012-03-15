@@ -4,6 +4,6 @@ class Pot < ActiveRecord::Base
   after_update            :broadcast
 
   def broadcast
-    Juggernaut.publish("#{self.table.id}", self.changes.to_json)
+    Juggernaut.publish("#{self.table.id}", "POT --> " + self.changes.to_json)
   end
 end
