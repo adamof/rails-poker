@@ -99,11 +99,18 @@
         dataType: "text"
       });      
     }
+    function deal(){
+      var request = $.ajax({
+        url: "/deal",
+        type: "GET",
+      });
+    }
   </script>
 
   <%= link_to_function "Fold", "fold()" %>  
   <%= link_to_function "Check", "check()" %>
   <%= link_to_function "Raise", "raise()" %>
+  <%= link_to_function "Deal", "deal()" %>
 
 </body>
 
