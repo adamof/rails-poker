@@ -12,6 +12,6 @@ class Player < ActiveRecord::Base
   
   
   def broadcast    
-    Juggernaut.publish("#{self.id}", self.changes.to_json)
+    Juggernaut.publish("#{self.table_id}/#{self.id}", self.changes.to_json)
   end
 end

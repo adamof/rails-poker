@@ -86,7 +86,7 @@
       var request = $.ajax({
         url: "/check",
         type: "POST",
-        data: {id : 9},
+        data: {id : playerId},
         dataType: "text"
       });      
     }
@@ -95,7 +95,7 @@
       var request = $.ajax({
         url: "/raise",
         type: "POST",
-        data: {id : 9, amount : 100},
+        data: {id : playerId, amount : 100},
         dataType: "text"
       });      
     }
