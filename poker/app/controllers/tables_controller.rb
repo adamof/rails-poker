@@ -59,4 +59,20 @@ class TablesController < ApplicationController
     render :nothing => true
   end
   
+  def deal
+    @table = Table.first
+    players = @table.players
+    i = 0
+    
+    players.each do |p|
+      p.card_1 = "Card " + i.to_s
+      i += 1
+      p.card_2 = "Card " + i.to_s
+      i += 1
+      p.save!
+    end
+    
+    render :nothing => true
+  end
+  
 end

@@ -13,6 +13,7 @@ Poker::Application.routes.draw do
   match '/fold' => 'tables#fold'
   match '/check' => 'tables#check'
   match '/raise' => 'tables#raise_bet'
+  match '/deal' => 'tables#deal'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
