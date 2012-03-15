@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
     t.datetime "updated_at",                            :null => false
   end
 
+  add_index "players", ["email"], :name => "index_players_on_email", :unique => true
+
   create_table "players_pots", :id => false, :force => true do |t|
     t.integer "player_id"
     t.integer "pot_id"
@@ -48,8 +50,8 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
   end
 
   create_table "tables", :force => true do |t|
-    t.text     "cards_on_table"
-    t.text     "cards_in_deck"
+    t.string   "cards_on_table"
+    t.string   "cards_in_deck"
     t.integer  "button",         :default => 0
     t.integer  "blind_amount"
     t.integer  "tournament_id"
