@@ -18,15 +18,21 @@ class Table < ActiveRecord::Base
       players << player
     end
 
-    # table = {playerTurn : int, button : int, tableNumber : int, 
-      # blindAmount : int, sharedCards : [“3D”, “KH”], pot : int}
+    table = {"playerTurn" => self.player_turn, "button" => self.button, 
+      "tableNumber" => self.id, "blindAmount" => self.blind_amount, 
+      "sharedCards" => self.cards_on_table, "pot" => self.getTotalPot}
 
-    # Juggernaut.publish("channel1", "updated table #{self.id}")
-    # Juggernaut.publish("channel1", self.to_json)
-    Juggernaut.publish("channel1", players)
-    # Juggernaut.publish("channel1", "changes are #{self.changes}")
 
-    # Juggernaut.publish("channel2", "updated table #{self.id} on 2")
+    result = {"players" => players, "table" => table}
+    Juggernaut.publish("channel1", result)
 
+  end
+
+  def getTotalPot
+    result = 0
+    self.pots.each do |pot|
+      result += pot.amount
+    end
+    return result
   end
 end
