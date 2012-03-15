@@ -4,7 +4,7 @@ class Player < ActiveRecord::Base
   devise :database_authenticatable, :registerable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :encrypted_password, :pots, :table
   belongs_to              :tournament
   belongs_to              :table
   has_and_belongs_to_many :pots
