@@ -9,7 +9,7 @@ Poker::Application.configure do
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
-  config.action_mailer.default_url_options = { :host => 'localhost:8080' }
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
