@@ -11,7 +11,7 @@ end
 
 module Poker
   class Application < Rails::Application
-  use Rack::Cors do
+  config.middleware.use Rack::Cors do
     allow do
       origins '*'
       resource '/*', :headers => :any, :methods => [:get, :post]

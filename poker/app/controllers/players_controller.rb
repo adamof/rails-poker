@@ -9,5 +9,11 @@ class PlayersController < ApplicationController
     @player = Player.new
     render 'signin'
   end
+
+  def sign_ajax
+    sign_in :player, Player.find(params[:player_id])
+    render :json => {:player_id => current_player.id,
+     :table_id => current_player.table_id}
+  end
   
 end

@@ -1,12 +1,4 @@
 class TablesController < ApplicationController
-  
-  def cross_site_sharing
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Request-Method'] = 'POST, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = 'X-Requested-With'
-    headers['Access-Control-Max-Age'] = '1278000'
-    render nothing: true, status: 200
-  end
 
   def index
     @tables = Table.all
