@@ -24,9 +24,9 @@ class Table < ActiveRecord::Base
 
 
     result = {"players" => players, "table" => table}
-    # Juggernaut.publish("#{self.id}", result)
+    Juggernaut.publish("#{self.id}", result)
     # if not self.changes.length == 1
-      Juggernaut.publish("#{self.id}", "TABLE --> " + self.changes.to_json)
+      # Juggernaut.publish("#{self.id}", self.changes.to_json)
     # end
 
   end
