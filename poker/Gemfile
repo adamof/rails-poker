@@ -24,6 +24,9 @@ group :development do
   gem "rails-erd"
 end
 
+gem 'rack-cors',
+  :require => 'rack/cors'
+
 gem 'jquery-rails'
 gem 'juggernaut'
 gem 'devise'
