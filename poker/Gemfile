@@ -27,6 +27,7 @@ end
 gem 'jquery-rails'
 gem 'juggernaut'
 gem 'devise'
+gem 'ruby-poker'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

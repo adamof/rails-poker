@@ -38,4 +38,16 @@ class Table < ActiveRecord::Base
     end
     return result
   end
+  
+  def dealDeck
+    @cards_in_deck = []
+    Card::SUITS.each_byte do |suit|
+      # careful not to double include the aces...
+      Card::FACES[1..-1].each_byte do |face|
+        @cards_in_deck.push(Card.new(face.chr, suit.chr).to_s)
+      end
+    end
+    @cards_in_deck = @cards_in_deck.sort_by { rand }
+    self.cards_in_deck = @cards_in_deck
+  end
 end
