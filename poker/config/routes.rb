@@ -15,6 +15,8 @@ Poker::Application.routes.draw do
   match '/raise' => 'tables#raise_bet'
   match '/deal' => 'tables#deal'
 
+  match '/allow_cors', to: 'tables#cross_site_sharing', via: :options
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
