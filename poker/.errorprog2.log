@@ -1,8 +1,0 @@
-The "sys" module is now called "util". It should have a similar interface.
-
-events.js:48
-        throw arguments[1]; // Unhandled 'error' event
-        ^
-Error: write Unknown system errno 5
-    at errnoException (net.js:646:11)
-    at Object.afterWrite [as oncomplete] (net.js:480:18)
