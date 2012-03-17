@@ -50,4 +50,23 @@ class Table < ActiveRecord::Base
     @cards_in_deck = @cards_in_deck.sort_by { rand }
     self.cards_in_deck = @cards_in_deck
   end
+
+  def playerJoin
+    
+  end
+
+  class << self    
+    def subscribe
+      Juggernaut.subscribe do |event, data|
+        if data["meta"]["table"]
+          case event
+          when :subscribe
+            Juggernaut.publish(data["meta"]["table_id"], "Connected player #{data["meta"]["player_id"]}")
+          when :unsubscribe
+            Juggernaut.publish(data["meta"]["table_id"], "Disconnected player #{data["meta"]["player_id"]}")
+          end
+        end
+      end
+    end
+  end
 end

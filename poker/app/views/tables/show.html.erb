@@ -27,6 +27,10 @@
   <textarea id="playerLog" class="log" readonly></textarea>
   
   <script type="text/javascript" charset="utf-8">
+
+    var playerId = <%= current_player.id %>;
+    var tableId = <%= @table.id %>;
+
     var logElement = document.getElementById("tableLog");
     logElement.value = "";
     var tableLog = function(data){
@@ -34,20 +38,20 @@
     };
     
     var channelJug = new Juggernaut;
+    channelJug.meta = {player_id: playerId, table_id: tableId, table: true};
     
    channelJug.on("connect", function(){ tableLog("Connected to table") });
    channelJug.on("disconnect", function(){ tableLog("Disconnected") });
    channelJug.on("reconnect", function(){ tableLog("Reconnecting") });
     
-    tableLog("Subscribed to table <%= @table.id %> channel");
+    tableLog("Subscribed to table "+tableId+" channel");
     
-   channelJug.subscribe("<%= @table.id %>", function(data){
+   channelJug.subscribe(tableId.toString(), function(data){
       tableLog("Got data: " + data);
       console.log(data);
       console.log("table data ^");
     });
 
-    var playerId = <%= current_player.id %>
 
     var playerLogElement = document.getElementById("playerLog");
     playerLogElement.value = "";
@@ -56,14 +60,15 @@
     };
 
     var playerJug = new Juggernaut;
+    playerJug.meta = {player_id: playerId, table_id: tableId};
     
     playerJug.on("connect", function(){ playerLog("Connected to player channel") });
     playerJug.on("disconnect", function(){ playerLog("Disconnected 2") });
     playerJug.on("reconnect", function(){ playerLog("Reconnecting 2") });
     
-    playerLog("Subscribing to player channel <%= @table.id %>/<%= current_player.id %>");
+    playerLog("Subscribing to player channel "+tableId+"/"+playerId);
     
-    playerJug.subscribe("<%= @table.id %>/<%= current_player.id %>", function(data){
+    playerJug.subscribe(tableId+"/"+playerId, function(data){
       playerLog("Got data: " + data);
     });
     
