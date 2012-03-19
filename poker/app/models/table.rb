@@ -51,22 +51,30 @@ class Table < ActiveRecord::Base
     self.cards_in_deck = @cards_in_deck
   end
 
-  def playerJoin
-    
-  end
-
   class << self    
     def subscribe
       Juggernaut.subscribe do |event, data|
-        if data["meta"]["table"]
-          case event
-          when :subscribe
-            Juggernaut.publish(data["meta"]["table_id"], "Connected player #{data["meta"]["player_id"]}")
-          when :unsubscribe
-            Juggernaut.publish(data["meta"]["table_id"], "Disconnected player #{data["meta"]["player_id"]}")
-          end
+        player_id = data["meta"] && data["meta"]["table"]
+        next unless player_id
+        case event
+        when :subscribe
+          Juggernaut.publish(data["meta"]["table_id"], "Connected player #{data["meta"]["player_id"]}")
+          self.playerJoin(data["meta"]["player_id"])
+        when :unsubscribe
+          Juggernaut.publish(data["meta"]["table_id"], "Disconnected player #{data["meta"]["player_id"]}")
+          self.playerLeave(data["meta"]["player_id"])
         end
       end
+    end
+    def playerJoin(player_id)
+      @player = Player.find(player_id)
+      @player.connections += 2
+      @player.save
+    end
+    def playerLeave(player_id)
+      @player = Player.find(player_id)
+      @player.connections -= 1
+      @player.save
     end
   end
 end

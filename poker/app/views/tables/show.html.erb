@@ -31,28 +31,7 @@
     var playerId = <%= current_player.id %>;
     var tableId = <%= @table.id %>;
 
-    var logElement = document.getElementById("tableLog");
-    logElement.value = "";
-    var tableLog = function(data){
-      logElement.value += (data + "\n");
-    };
     
-    var channelJug = new Juggernaut;
-    channelJug.meta = {player_id: playerId, table_id: tableId, table: true};
-    
-   channelJug.on("connect", function(){ tableLog("Connected to table") });
-   channelJug.on("disconnect", function(){ tableLog("Disconnected") });
-   channelJug.on("reconnect", function(){ tableLog("Reconnecting") });
-    
-    tableLog("Subscribed to table "+tableId+" channel");
-    
-   channelJug.subscribe(tableId.toString(), function(data){
-      tableLog("Got data: " + data);
-      console.log(data);
-      console.log("table data ^");
-    });
-
-
     var playerLogElement = document.getElementById("playerLog");
     playerLogElement.value = "";
     var playerLog = function(data){
@@ -72,6 +51,26 @@
       playerLog("Got data: " + data);
     });
     
+    var logElement = document.getElementById("tableLog");
+    logElement.value = "";
+    var tableLog = function(data){
+      logElement.value += (data + "\n");
+    };
+    
+    var channelJug = new Juggernaut;
+    channelJug.meta = {player_id: playerId, table_id: tableId, table: true};
+    
+   channelJug.on("connect", function(){ tableLog("Connected to table") });
+   channelJug.on("disconnect", function(){ tableLog("Disconnected") });
+   channelJug.on("reconnect", function(){ tableLog("Reconnecting") });
+    
+    tableLog("Subscribed to table "+tableId+" channel");
+    
+   channelJug.subscribe(tableId.toString(), function(data){
+      tableLog("Got data: " + data);
+      console.log(data);
+      console.log("table data ^");
+    });    
 
   </script>
 

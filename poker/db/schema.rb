@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
   create_table "players", :force => true do |t|
     t.string   "email",              :default => "",    :null => false
     t.string   "encrypted_password", :default => "",    :null => false
+    t.integer  "connections",        :default => 0
     t.string   "name"
     t.string   "card_1"
     t.string   "card_2"

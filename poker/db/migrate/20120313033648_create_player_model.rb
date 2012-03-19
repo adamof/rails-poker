@@ -7,14 +7,17 @@ class CreatePlayerModel < ActiveRecord::Migration
       t.string    :email,              :null => false, :default => ""
       t.string    :encrypted_password, :null => false, :default => "" 
 
+      # connectivity
+      t.integer   :connections, :default => 0
+
       # game
       t.string    :name
       t.string    :card_1
       t.string    :card_2
       t.string    :token
       t.datetime  :left_game_at
-      t.integer   :money,   :default => 0
-      t.boolean   :folded,  :default => false
+      t.integer   :money,       :default => 0
+      t.boolean   :folded,      :default => false
       t.string    :last_action
 
       # belongs to
