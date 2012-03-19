@@ -36,6 +36,110 @@ class Table < ActiveRecord::Base
     @cards_in_deck = @cards_in_deck.sort_by { rand }
     self.cards_in_deck = @cards_in_deck
   end
+  
+  def dealToPlayers
+    self.players.each do |p|
+      p.card_1 = GameLogic.dealCard(self.cards_in_deck)
+      self.cards_in_deck.delete(p.card_1)
+      p.card_2 = GameLogic.dealCard(self.cards_in_deck)
+      self.card_in_deck.delete(p.card_2)
+      p.save!
+      self.save!
+    end
+  end
+  
+  def incrementPlayerTurn
+    startingIndex = self.player_turn + 1
+    while(true)
+      player = self.players[(startingIndex % self.players.count)]
+      if player.left_table_at == nil && player.folded == false
+        self.player_turn = startingIndex
+        self.save!
+        return
+      else
+        startingIndex += 1
+      end
+    end
+  end
+  
+  def determineStartingPlayer(condition)
+    
+    if condition == "first"
+      startingIndex = (self.button + 3)
+    else
+      startingIndex = (self.button + 1)
+    end
+    while(true)
+      player = self.players[startingIndex]
+      if player.active?
+        self.player_turn = startingIndex
+        self.save!
+        return
+      else
+        startingIndex += 1
+      end
+    end
+    
+  end
+  
+  def takeBlinds
+    smallBlind = self.button + 1
+    pot = Pot.new
+    pot.table_id = self.id
+    hash = Hash.new
+    self.players.each do |p|
+      hash[p.id] = p.amount
+    end
+    pot.player_amounts = hash
+    pot.save!
+    
+        
+    while(true)
+      player = self.players[smallBlind] % self.players.count
+      if player.active?
+        if player.amount > (self.blind_amount / 2)
+          player.amount -= (self.blind_amount / 2)
+          pot.player_amounts[player.id] = player.amount
+          player.save!
+          pot.save!
+        else
+          pot.amount += player.amount
+          pot.player_amounts[player.id] = player.amount
+          player.amount = 0
+          
+          player.save!
+          pot.save!
+        end
+        bigBlind = (self.players[smallBlind] + 1) % self.players.count
+        while(true)
+          player = self.players[bigBlind] % self.players.count
+          if player.active?
+            if player.amount > self.blind_amount
+              player.amount -= self.blind_amount
+              pot.amount += self.blind_amount
+              pot.player_amounts[player.id] = player.amount
+              player.save!
+              pot.save!
+              return
+            else
+              pot.amount += player.amount
+              pot.player_amounts[player.id] = player.amount
+              player.amount = 0
+              
+              player.save!
+              pot.save!
+              return
+            end
+          else
+            bigBlind += 1
+          end
+        end  
+          
+      else
+        smallBlind += 1
+      end
+    end
+  end
 
   class << self    
     def subscribe

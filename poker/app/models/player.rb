@@ -25,4 +25,8 @@ class Player < ActiveRecord::Base
     Juggernaut.publish("#{self.table_id}/#{self.id}", 
       "PLAYER --> " + self.changes.to_json)
   end
+  
+  def active?
+    return self.amount > 0 && self.left_game_at == nil && self.folded != true
+  end
 end
