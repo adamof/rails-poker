@@ -39,7 +39,7 @@ class TablesController < ApplicationController
     player = Player.find(params[:id])
     bet_amount = params[:amount]
     player.last_action = "raised " + bet_amount
-    player.money = player.money - bet_amount.to_i
+    player.amount = player.amount - bet_amount.to_i
     player.save!
     
     pot = player.table.pots.first
