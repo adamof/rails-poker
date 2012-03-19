@@ -10,6 +10,8 @@ class CreateTableModel < ActiveRecord::Migration
       t.integer   :tournament_id
       t.integer   :hands_played,    :default => 0
       t.integer   :player_turn,     :default => 0
+      t.boolean   :started
+      t.integer   :lastRaise
 
       t.timestamps
     end

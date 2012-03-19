@@ -16,7 +16,7 @@ class CreatePlayerModel < ActiveRecord::Migration
       t.string    :card_2
       t.string    :token
       t.datetime  :left_game_at
-      t.integer   :money,       :default => 0
+      t.integer   :amount,      :default => 0
       t.boolean   :folded,      :default => false
       t.string    :last_action
 

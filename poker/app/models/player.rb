@@ -9,7 +9,17 @@ class Player < ActiveRecord::Base
   belongs_to              :table
   has_and_belongs_to_many :pots
   after_update :broadcast
-  
+  after_create :assignToTable
+
+  def assignToTable
+    self.table = Table.first_or_create
+    if self.table.players.count > 8
+      self.table = Table.new
+    end
+    self.amount = 1000
+    self.save
+    self.table.playerAdded
+  end
   
   def broadcast    
     Juggernaut.publish("#{self.table_id}/#{self.id}", 

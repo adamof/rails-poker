@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
     t.string   "card_2"
     t.string   "token"
     t.datetime "left_game_at"
-    t.integer  "money",              :default => 0
+    t.integer  "amount",             :default => 0
     t.boolean  "folded",             :default => false
     t.string   "last_action"
     t.integer  "table_id"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
     t.integer  "tournament_id"
     t.integer  "hands_played",   :default => 0
     t.integer  "player_turn",    :default => 0
+    t.boolean  "started"
+    t.integer  "lastRaise"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
