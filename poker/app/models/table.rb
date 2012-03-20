@@ -175,11 +175,16 @@ class Table < ActiveRecord::Base
     def playerJoin(player_id)
       @player = Player.find(player_id)
       @player.connections += 2
+      @player.left_game_at = nil
       @player.save
+      @player.table.save
     end
     def playerLeave(player_id)
       @player = Player.find(player_id)
       @player.connections -= 1
+      if @player.connection == 0
+        @player.left_game_at = Time.now
+      end
       @player.save
     end
   end
