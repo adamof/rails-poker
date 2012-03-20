@@ -128,7 +128,7 @@ module GameLogic
 
   	notFolded = 0
   	players.each do |player|
-  		if player.folded == true || player.left_game_at != nil
+  		if player.folded == true # || player.left_game_at != nil
   			notFolded += 1
   		else
         p player
