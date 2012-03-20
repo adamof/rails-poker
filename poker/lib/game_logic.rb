@@ -133,7 +133,7 @@ module GameLogic
   		end
   	end
 
-  	if (table.cards_on_table.count == 5 && table.lastRaise == index) || notFolded == 1
+  	if (table.cards_on_table.count == 5 && table.last_raise == index) || notFolded == 1
   		return "determineWinner"
   	end	
 
