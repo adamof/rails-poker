@@ -15,10 +15,18 @@ class Player < ActiveRecord::Base
   after_create :assignToTable
 
   def assignToTable
-    self.table = Table.first_or_create
-    if self.table.players.count > 8
-      self.table = Table.new
+    if Table.all.size == 0
+      t = Table.new
+      t.save
+      self.table = t
+    elsif Table.last.players.count < 8
+      self.table = Table.last
+    else
+      t = Table.new
+      t.save
+      self.table = t
     end
+    self.save
     self.amount = 1000
     self.save
     self.table.playerAdded
