@@ -107,7 +107,7 @@ class Table < ActiveRecord::Base
       player = self.players[startingIndex % self.players.count]
       if player.active?
         self.player_turn = startingIndex
-        self.last_raise = startinIndex
+        self.last_raise = startingIndex
         self.save!
         return
       else

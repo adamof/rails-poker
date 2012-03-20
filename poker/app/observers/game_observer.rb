@@ -26,7 +26,7 @@ class GameObserver < ActiveRecord::Observer
       players << player
     end
 
-    tableHash = {"playerTurn" => table.player_turn, "button" => table.button, 
+    tableHash = {"playerTurn" => table.players[table.player_turn].id, "button" => table.button, 
       "tableNumber" => table.id, "blindAmount" => table.blind_amount, 
       "sharedCards" => table.cards_on_table, "pot" => table.getTotalPot}
 

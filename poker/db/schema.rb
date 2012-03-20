@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
     t.integer  "hands_played",   :default => 0
     t.integer  "player_turn",    :default => 0
     t.boolean  "started"
-    t.integer  "lastRaise"
+    t.integer  "last_raise"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end

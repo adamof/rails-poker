@@ -11,7 +11,7 @@ class CreateTableModel < ActiveRecord::Migration
       t.integer   :hands_played,    :default => 0
       t.integer   :player_turn,     :default => 0
       t.boolean   :started
-      t.integer   :lastRaise
+      t.integer   :last_raise
 
       t.timestamps
     end
