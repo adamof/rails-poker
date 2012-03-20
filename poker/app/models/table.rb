@@ -97,8 +97,8 @@ class Table < ActiveRecord::Base
     self.save!
     self.determineStartingPlayer("first")
     self.takeBlinds
-    player = self.players[self.player_turn]
-    Juggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
+
+    self.getCurrentPlayer.broadcast  
   end
   
   def nextRound
@@ -110,8 +110,18 @@ class Table < ActiveRecord::Base
     else
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
     end
+    self.resetActions
     self.determineStartingPlayer("")
     self.getCurrentPlayer.broadcast
+  end
+  
+  def resetActions
+    self.players.each do |p|
+      if p.left_game_at == nil && p.folded == false
+        p.last_action = nil
+        p.save!
+      end
+    end
   end
   
   def incrementPlayerTurn
@@ -222,14 +232,13 @@ class Table < ActiveRecord::Base
     def subscribe
       Juggernaut.subscribe do |event, data|
         player_id = data["meta"] && data["meta"]["table"]
-        next unless player_id
         case event
         when :subscribe
           Juggernaut.publish(data["meta"]["table_id"], "Connected player #{data["meta"]["player_id"]}")
-          self.playerJoin(data["meta"]["player_id"])
+          Table.find(data["meta"]["table_id"]).broadcast
         when :unsubscribe
           Juggernaut.publish(data["meta"]["table_id"], "Disconnected player #{data["meta"]["player_id"]}")
-          self.playerLeave(data["meta"]["player_id"])
+          # self.playerLeave(data["meta"]["player_id"])
         end
       end
     end

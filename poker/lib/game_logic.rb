@@ -43,14 +43,16 @@ module GameLogic
       # find the winning hand
       pot.player_amounts.each do |player_id, amount|
         winningHand = (winningHand < playerHands[player_id]) ? playerHands[player_id] : winningHand
+        p winningHand.rank
       end
 
       # find out how many people share the pot
       pot.player_amounts.each do |player_id, amount|
-        if winningHand == playerHands[player_id]
+        if winningHand.rank == playerHands[player_id].rank
           ++winners
           potWinners[player_id]=0
         end
+
       end
 
       # set the corect profit
@@ -138,6 +140,21 @@ module GameLogic
 
   	players = table.players
 
+
+    activePlayers = 0
+    players.each do |player|
+      if player.folded == false # || player.left_game_at != nil
+        activePlayers += 1
+      else
+        p player
+      end
+    end
+
+    if (table.cards_on_table.count == 5 && table.last_raise == index) || activePlayers == 1
+      return "determineWinner"
+    end 
+
+
   	i = 0
   	while i < 8 do
       index = (index+1) % 8
@@ -151,22 +168,6 @@ module GameLogic
   	end
 
     p "INDEX -------------- " + index.to_s
-
-  	activePlayers = 0
-  	players.each do |player|
-  		if player.folded == false # || player.left_game_at != nil
-  			activePlayers += 1
-  		else
-        p player
-      end
-  	end
-	
-  	if (table.cards_on_table.count == 5 && table.last_raise == index) || activePlayers == 1
-  		return "determineWinner"
-  	end	
-  	if table.last_raise == index+1 
-  		return "nextRound"
-  	end
 
   	return "nextPlayer"
 
