@@ -15,7 +15,7 @@ class Table < ActiveRecord::Base
       # stub for the possibleActions until the GameLogic is implemented
       possibleActions = {"check" => false, "call" => true, 
         "raise" => true, "callAmount" => 10}
-      player = {"id" => p.id, "name" => p.name, "chips" => p.amount, 
+      player = {"id" => p.id, "name" => p.email, "chips" => p.amount, 
         "lastAction" => p.last_action, "possibleActions" => possibleActions}
       p.broadcast
       players << player

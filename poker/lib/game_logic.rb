@@ -13,7 +13,7 @@ module GameLogic
       end
     end
     if activePlayers == 1 and table.pots.count == 1
-      winner = table.players.where("folded='false'")
+      winner = table.players.where("folded='false'").first
       winner.amount += table.pots.first.amount
       return {winner.id.to_s => table.pots.first.amount}
     end
@@ -48,7 +48,7 @@ module GameLogic
 
       # find out how many people share the pot
       pot.player_amounts.each do |player_id, amount|
-        if winningHand.rank == playerHands[player_id].rank
+        if winningHand == playerHands[player_id]
           winners += 1
           potWinners[player_id]=0
         end
@@ -71,6 +71,23 @@ module GameLogic
         end
       end
     end
+
+    biggestWinner = 0
+    biggestProfit = 0
+
+    results.each do |key, value|
+      player = Player.find(key)
+      player.amount += value.to_i
+      if value.to_i > biggestProfit
+        biggestProfit = value.to_i
+        biggestWinner = key
+      end
+      player.save!
+    end
+    Juggernaut.publish("#{table.id}", results.to_json)
+    Juggernaut.publish("#{table.id}", "The winning hand was: " +  playerHands[biggestWinner].rank + " Its player was " + Player.find(biggestWinner).email)
+    Pot.delete_all
+
     p "-------------||||||||||||||--------" + results.to_s + "---------"
     return results
   end
