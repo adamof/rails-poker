@@ -169,6 +169,18 @@ class Table < ActiveRecord::Base
       end
     end
   end
+  
+  def doNext
+    nextAction = GameLogic.whatsNext(self)
+    if nextAction == "determineWinner"
+      Juggernaut.publish("#{self.id}", GameLogic.determineWinner(self).to_json)
+      self.startHand
+    elsif nextAction == "nextRound"
+      self.nextRound
+    else
+      self.incrementPlayerTurn
+    end
+  end
 
   class << self    
     def subscribe
