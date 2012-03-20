@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Poker 122</title>
+	<link type="text/css" rel="stylesheet" href="theme/css/base.css" />
+	<link type="text/css" rel="stylesheet" href="theme/css/game.css" />
+	<link type="text/css" rel="stylesheet" href="theme/css/application.css" />
+	<link type="text/css" rel="stylesheet" href="theme/css/animation.css" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="a-badge">
+			<ul>
+				<li>Created By:</li>
+				<li><a href="mailto:sadamov@uci.edu">Stefan Adamov</a></li>
+				<li><a href="mailto:cashins@uci.edu">Scott Cashin</a></li>
+				<li><a href="mailto:distefam@uci.edu">Michael DiStefano</a></li>
+				<li><a href="mailto:ettlinj@uci.edu">Joshua Ettlin</a></li>
+				<li><a href="mailto:ljacquot@uci.edu">Laurant Jacquot</a></li>
+				<li><a href="mailto:mlurey@uci.edu">Matan Lurey</a></li>
+				<li><a href="mailto:masisn@uci.edu">Masis Nguyen</a></li>
+				<li><a href="mailto:tdpham@uci.edu">Tri Pham</a></li>
+				<li><a href="mailto:shahmp@uci.edu">Milin Shah</a></li>
+			</ul>
+	</div>
+	<div id="a-modalBackground">
+	
+	</div>
+	<div id="a-modelMessage">
+	
+	</div>
+	<div id="a-tableIdentifier">
+	
+	</div>
+	<div id="a-gameCanvas">
+		<ul class="playerCollection">
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+			<li>
+				
+			</li>
+		</ul>
+	</div>
+	<div id="a-gameOptions">
+		You have <span name="amount">no</span> credits<br />
+		<button name="deal" disabled>Deal</button>
+		<button name="fold" disabled>Fold</button>
+		<button name="call" disabled>Call</button>
+		<button name="raise" disabled>Raise</button>
+		<button name="quit" disabled>Quit</button>
+	</div>
+	<div id="a-gamePot">
+		<span name="amount">0</span> Credits
+	</div>
+	<div id="a-gameChannel">
+		
+	</div>
+</div>
+<!-- Libraries -->
+<script src="lib/jquery.js"></script>			<!-- DOM Manipulation, Ajax, Helpers -->
+<script src="lib/underscore.js"></script>		<!-- Helpers -->
+<script src="lib/backbone.js"></script>			<!-- Routing, MVC -->
+<script src="lib/buzz.js"></script>				<!-- Sounds -->
+<script src="lib/mustache.js"></script>			<!-- Templates -->
+<script src="lib/json.js"></script>				<!-- JSON -->
+<script src="lib/socket.io.js"></script>		<!-- Networking 1/2 -->
+<script src="lib/juggernaut.js"></script>		<!-- Networking 2/2 -->
+<!-- Application -->
+<script src="app/core.js"></script>
+<script src="app/audio.js"></script>
+<script src="app/templates.js"></script>
+<script src="app/models.js"></script>
+<script src="app/events.js"></script>
+<script src="app/service.js"></script>
+<script src="app/app.js"></script>
+<!-- Bootstrap -->
+<script>
+	poker.assignedPokerId = null; /* REPLACE w/ Ruby Template */
+</script>
+</body>
+</html>

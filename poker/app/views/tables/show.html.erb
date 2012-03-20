@@ -1,122 +1,100 @@
-<%= javascript_include_tag "juggernaut" %>
-
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-  <meta name="charset" content="utf-8">
-  <title>Poker</title>
-  
-  <style type="text/css" media="screen">
-    h1 {
-      margin: 1em 0;
-    }
-    
-    .log {
-      padding: 5px;
-      background: #CCC;
-      height: 500px;
-      width: 400px;
-    }
-  </style>
+  <title>Poker 122</title>
+  <link type="text/css" rel="stylesheet" href="theme/css/base.css" />
+  <link type="text/css" rel="stylesheet" href="theme/css/game.css" />
+  <link type="text/css" rel="stylesheet" href="theme/css/application.css" />
+  <link type="text/css" rel="stylesheet" href="theme/css/animation.css" />
 </head>
 <body>
-
-  <h1>Poker, lala!</h1>
+<div id="wrapper">
+  <div id="a-badge">
+      <ul>
+        <li>Created By:</li>
+        <li><a href="mailto:sadamov@uci.edu">Stefan Adamov</a></li>
+        <li><a href="mailto:cashins@uci.edu">Scott Cashin</a></li>
+        <li><a href="mailto:distefam@uci.edu">Michael DiStefano</a></li>
+        <li><a href="mailto:ettlinj@uci.edu">Joshua Ettlin</a></li>
+        <li><a href="mailto:ljacquot@uci.edu">Laurant Jacquot</a></li>
+        <li><a href="mailto:mlurey@uci.edu">Matan Lurey</a></li>
+        <li><a href="mailto:masisn@uci.edu">Masis Nguyen</a></li>
+        <li><a href="mailto:tdpham@uci.edu">Tri Pham</a></li>
+        <li><a href="mailto:shahmp@uci.edu">Milin Shah</a></li>
+      </ul>
+  </div>
+  <div id="a-modalBackground">
   
-  <textarea id="tableLog" class="log" readonly></textarea>
-  <textarea id="playerLog" class="log" readonly></textarea>
+  </div>
+  <div id="a-modelMessage">
   
-  <script type="text/javascript" charset="utf-8">
-
-    var playerId = <%= current_player.id %>;
-    var tableId = <%= @table.id %>;
-
+  </div>
+  <div id="a-tableIdentifier">
+  
+  </div>
+  <div id="a-gameCanvas">
+    <ul class="playerCollection">
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+  </div>
+  <div id="a-gameOptions">
+    You have <span name="amount">no</span> credits<br />
+    <button name="deal" disabled>Deal</button>
+    <button name="fold" disabled>Fold</button>
+    <button name="call" disabled>Call</button>
+    <button name="raise" disabled>Raise</button>
+    <button name="quit" disabled>Quit</button>
+  </div>
+  <div id="a-gamePot">
+    <span name="amount">0</span> Credits
+  </div>
+  <div id="a-gameChannel">
     
-    var playerLogElement = document.getElementById("playerLog");
-    playerLogElement.value = "";
-    var playerLog = function(data){
-      playerLogElement.value += (data + "\n");
-    };
-
-    var playerJug = new Juggernaut;
-    playerJug.meta = {player_id: playerId, table_id: tableId};
-    
-    playerJug.on("connect", function(){ playerLog("Connected to player channel") });
-    playerJug.on("disconnect", function(){ playerLog("Disconnected 2") });
-    playerJug.on("reconnect", function(){ playerLog("Reconnecting 2") });
-    
-    playerLog("Subscribing to player channel "+tableId+"/"+playerId);
-    
-    playerJug.subscribe(tableId+"/"+playerId, function(data){
-      playerLog("Got data: " + data);
-    });
-    
-    var logElement = document.getElementById("tableLog");
-    logElement.value = "";
-    var tableLog = function(data){
-      logElement.value += (data + "\n");
-    };
-    
-    var channelJug = new Juggernaut;
-    channelJug.meta = {player_id: playerId, table_id: tableId, table: true};
-    
-   channelJug.on("connect", function(){ tableLog("Connected to table") });
-   channelJug.on("disconnect", function(){ tableLog("Disconnected") });
-   channelJug.on("reconnect", function(){ tableLog("Reconnecting") });
-    
-    tableLog("Subscribed to table "+tableId+" channel");
-    
-   channelJug.subscribe(tableId.toString(), function(data){
-      tableLog("Got data: " + data);
-      console.log(data);
-      console.log("table data ^");
-    });    
-
-  </script>
-
-  <script type="text/javascript">
-    function fold() {
-      
-      var request = $.ajax({
-        url: "/fold",
-        type: "POST",
-        data: {id : playerId},
-        dataType: "text"
-      });      
-    }
-    function check() {
-      
-      var request = $.ajax({
-        url: "/check",
-        type: "POST",
-        data: {id : playerId},
-        dataType: "text"
-      });      
-    }
-    function raise() {
-      
-      var request = $.ajax({
-        url: "/raise",
-        type: "POST",
-        data: {id : playerId, amount : 100},
-        dataType: "text"
-      });      
-    }
-    function deal(){
-      var request = $.ajax({
-        url: "/deal",
-        type: "GET",
-        data: {id : <%= @table.id %>}
-      });
-    }
-  </script>
-
-  <%= link_to_function "Fold", "fold()" %>  
-  <%= link_to_function "Check", "check()" %>
-  <%= link_to_function "Raise", "raise()" %>
-  <%= link_to_function "Deal", "deal()" %>
-
+  </div>
+</div>
+<!-- Libraries -->
+<script src="lib/jquery.js"></script>     <!-- DOM Manipulation, Ajax, Helpers -->
+<script src="lib/underscore.js"></script>   <!-- Helpers -->
+<script src="lib/backbone.js"></script>     <!-- Routing, MVC -->
+<script src="lib/buzz.js"></script>       <!-- Sounds -->
+<script src="lib/mustache.js"></script>     <!-- Templates -->
+<script src="lib/json.js"></script>       <!-- JSON -->
+<script src="lib/socket.io.js"></script>    <!-- Networking 1/2 -->
+<script src="lib/juggernaut.js"></script>   <!-- Networking 2/2 -->
+<!-- Application -->
+<script src="app/core.js"></script>
+<script src="app/audio.js"></script>
+<script src="app/templates.js"></script>
+<script src="app/models.js"></script>
+<script src="app/events.js"></script>
+<script src="app/service.js"></script>
+<script src="app/app.js"></script>
+<!-- Bootstrap -->
+<script>
+  poker.assignedPlayerId = <%= current_player.id %>; /* REPLACE w/ Ruby Template */
+</script>
 </body>
-
-
 </html>

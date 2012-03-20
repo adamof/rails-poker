@@ -1,0 +1,293 @@
+body {
+	background: url(../images/app-bg.png);
+}
+
+#a-modalBackground {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.65;
+	z-index: 5;
+}
+
+#a-modelMessage {
+	cursor: pointer;
+	position: absolute;
+	width: 288px;
+	height: 310px;
+	top: 50%;
+	left: 50%;
+	margin-left: -144px;
+	margin-top: -250px;
+	background: url(../images/logo.jpg);
+	border: 2px solid #333;
+	z-index: 6;
+}
+
+#a-gameCanvas {
+	background: url(../images/table-bg.jpg);
+	width: 800px;
+	height: 400px;
+	border-radius: 50px;
+	border: 20px solid #222;
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	margin-left: -400px;
+	margin-top: -200px;
+	
+	.playerCollection {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		
+		> li {
+			position: absolute;	
+			background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+			border: 2px solid #FFF;
+			width: 100px;
+			height: 100px;
+			
+			&.active {
+				border-color: red;
+				 -webkit-animation-name: flashing;  
+				 -webkit-animation-iteration-count: 2;  
+				 -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+				 -webkit-animation-duration: 0.75s; 
+			}
+			
+			&.playing {
+				background: transparent;
+				font-size: 9px;
+			}
+			
+			> .name, .last {
+				display: block;
+				text-align: center;
+				background: #FFF;
+				padding: 5px;
+				margin: 10px;
+				border: 1px solid #000;
+				margin-top: -10px;
+				text-transform: capitalize;
+			}
+			
+			>.last {
+				margin-top: 80px;
+				text-transform: capitalize;
+				color: #444;
+			}
+			
+			&.isYou > .name{
+				background: yellow;
+				font-weight: bold;
+			}
+			
+			> .chips {
+				font-size: 14px;
+				font-weight: bold;
+				color:  #FFF;
+				position:  absolute;
+				text-align: left;
+				width: 100px;
+				height: 100px;
+				line-height: 100px;
+				text-align: center;
+				margin-top: 0px;
+			}
+		}
+		
+		:nth-child(1) {
+			margin-top: 50px;
+		}
+		
+		:nth-child(8) {
+			margin-top: 250px;
+		}
+		
+		:nth-child(7) {
+			margin-top: 295px;
+			margin-left: 150px;
+		}
+		
+		:nth-child(6) {
+			margin-top: 295px;
+			margin-left: 550px;	
+		}
+		
+		:nth-child(5) {
+			margin-top: 250px;
+			margin-left: 695px;
+		}
+		
+		:nth-child(4) {
+			margin-top: 50px;
+			margin-left: 695px;
+		}
+		
+		:nth-child(3) {
+			margin-top: 0px;
+			margin-left: 550px;
+		}
+		
+		:nth-child(2) {
+			margin-top: 0px;
+			margin-left: 150px;
+		}
+	}
+	
+	.m-cardCollection {
+		&.s-col-shared {
+			
+			a {
+				width: 75px;
+				height: 100px;
+				background-size: 75px 100px;
+				margin-right:  25px;
+			}
+		}
+		
+		&.s-col-hand {
+			position:  absolute;
+			top:  125px;
+			
+			a {
+				margin-right: 25px;
+				width: 75px;
+				height: 100px;
+				background-size: 75px 100px;
+			}
+		}
+		
+		a {
+			-webkit-animation-name: fly;  
+			-webkit-animation-iteration-count: 1;  
+			-webkit-animation-timing-function: default;
+			-webkit-animation-duration: 0.5s; 
+		}
+	}
+	
+	> .m-tableState > .m-cardCollection {
+		position: absolute;
+		margin-left: 120px;
+		margin-top: 120px;
+		
+		&.s-col-hand {
+			margin-left: 270px;
+		}
+	}
+}
+
+#a-gameChannel {
+	position: fixed;
+	bottom: 0;
+	height: 150px;
+	width: 100%;
+	background: #FFF;
+	border-top: 1px solid #AAA;
+	overflow-y: scroll;
+	
+	> span {
+		display: block;
+		border-bottom: 1px solid #CCC;
+		padding: 5px;
+		clear:  left;
+		
+		> .from { font-weight: bold; float: left; width: 140px; }
+		> .message { color: #222; }
+	}
+}
+
+#a-tableIdentifier {
+	color: #222;
+	font-size: 24px;
+	font-weight: bold;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	position: absolute;
+}
+
+#a-gameOptions {
+	background: #FFF;
+	padding: 5px;
+	border: 2px solid #CCC;
+	position: absolute;
+	width: 150px;
+	height: 240px;
+	margin-top: 50px;
+	margin-left: 35px;
+	text-align: center;
+	
+	span { 
+		font-weight: bold;
+		&.changed {
+			-webkit-animation-name: flashing;  
+			-webkit-animation-iteration-count: 2;  
+			-webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+			-webkit-animation-duration: 0.75s; 
+		}
+	}
+	
+	button { display: block; width: 150px; margin-top: 15px; height: 30px; }
+}
+
+#a-gamePot {
+	background:  url(../images/chips.png) no-repeat;
+	background-size: 50% 50%;
+	width: 200px;
+	height: 100px;
+	position: absolute;
+	line-height: 50px;
+	color: #FFF;
+	left: 50%;
+	top:  50%;
+	margin-left: -100px;
+	margin-top: -300px;
+	
+	span {
+		padding-left: 100px;
+		font-weight: bold;
+		
+		&.changed {
+			-webkit-animation-name: flashing;  
+			-webkit-animation-iteration-count: 2;  
+			-webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+			-webkit-animation-duration: 0.75s; 
+		}
+	}
+}
+
+#a-badge {
+	position: absolute;
+	width: 100%;
+	background: url(/res/html5-badge.png) no-repeat top right;
+	padding-top: 150px;
+	margin-left: -10px;
+	margin-top: 50px;
+	
+	> ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		float: right;
+		text-align: center;
+		width: 130px;
+		
+		> li {
+			line-height: 25px;
+			font-weight: bold;
+			
+			> a {
+				text-decoration: none;
+				color: #444;
+				font-weight: normal;
+				
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}

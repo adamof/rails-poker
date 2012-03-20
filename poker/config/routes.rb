@@ -14,6 +14,7 @@ Poker::Application.routes.draw do
   match '/check' => 'tables#check', :via => [:get, :post]
   match '/raise' => 'tables#raise_bet', :via => [:get, :post]
   match '/deal' => 'tables#deal', :via => :get
+  match '/' => 'players#signin'
 
   match '/sign_ajax' => 'players#sign_ajax', :via => [:get, :post]
 

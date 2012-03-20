@@ -1,0 +1,10 @@
+<ul class="m-cardCollection s-col-{{name}}">
+{{#cards}}
+	{{#visible}}
+	<li><a class="s-suit-{{suit}} s-name-{{name}}" href="#!"></a></li>
+	{{/visible}}
+	{{^visible}}
+	<li><a class="s-notVisible" href="#!"></a></li>
+	{{/visible}}
+{{/cards}}
+</ul>

@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title>Bot for Rails Poker</title>
+	<style>
+		body {
+			font-family: Verdana;
+			font-size: 15px;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+		}
+		
+		div {
+			border-top: 1px solid #CCC;
+			padding: 10px;
+		}
+	</style>
+</head>
+<!-- Libraries -->
+<script src="lib/jquery.js"></script>			<!-- DOM Manipulation, Ajax, Helpers -->
+<script src="lib/underscore.js"></script>		<!-- Helpers -->
+<script src="lib/backbone.js"></script>			<!-- Routing, MVC -->
+<script src="lib/buzz.js"></script>				<!-- Sounds -->
+<script src="lib/mustache.js"></script>			<!-- Templates -->
+<script src="lib/json.js"></script>				<!-- JSON -->
+<script src="lib/socket.io.js"></script>		<!-- Networking 1/2 -->
+<script src="lib/juggernaut.js"></script>		<!-- Networking 2/2 -->
+<!-- Application -->
+<script src="app/core.js"></script>
+<script src="app/audio.js"></script>
+<script src="app/templates.js"></script>
+<script src="app/models.js"></script>
+<script src="app/events.js"></script>
+<script src="app/service.js"></script>
+<!-- Bootstrap -->
+<script>
+jQuery(function($){
+	var playerId = prompt('Player ID?');
+	
+	if (!playerId) {
+		$('body').append($('<div>Refresh me to try again</div>'));
+		return;
+	}
+	
+	new poker.service.TournamentService().createTableService(playerId, function(tableService){
+		tableService.subscribe(new poker.events.TableStateHandler({
+			channel: {
+				connect: function() {
+					$('body').empty().append($('<div>I am ready to serve as Player ID#' + playerId + '</div>'));
+				},
+				
+				notify: function(data) {
+					if (typeof data != 'object')
+						return;
+					
+					var tableObject = new poker.models.Table(data.table)
+				}
+			},
+			
+			player: {
+				notify: function(data) {
+					if (typeof data != 'object')
+						data = JSON.parse(data);
+						
+					if (data.actions.call) {
+						$('body').append($('<div>It was my turn, and I\'m calling obediantly</div>'));
+						tableService.check(function(){
+							
+						});
+					} else {
+						$('body').append($('<div>It was my turn, and I\'m folding obediantly</div>'));
+						tableService.fold(function(){
+							
+						});
+					}
+				}
+			}
+		}));
+	});
+});
+</script>
+</html>
