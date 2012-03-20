@@ -29,7 +29,7 @@ class Table < ActiveRecord::Base
   
   def nextPlayerTurn
     @table.incrementPlayerTurn
-    Jugggernaut.publish("#{self.id}/#{self.player_turn}", GameLogic.possibleActions(self.players[self.player_turn]).to_json)
+    Jugggernaut.publish("#{self.id}/#{self.players[self.player_turn].id}", GameLogic.possibleActions(self.players[self.player_turn]).to_json)
   end
   
   def dealDeck
@@ -42,6 +42,7 @@ class Table < ActiveRecord::Base
     end
     @cards_in_deck = @cards_in_deck.sort_by { rand }
     self.cards_in_deck = @cards_in_deck
+    self.save
   end
   
   def dealToPlayers

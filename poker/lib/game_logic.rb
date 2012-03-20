@@ -130,7 +130,9 @@ module GameLogic
   	players.each do |player|
   		if player.folded == true || player.left_game_at != nil
   			notFolded += 1
-  		end
+  		else
+        p player
+      end
   	end
 
   	if (table.cards_on_table.count == 5 && table.lastRaise == index) || notFolded == 1
