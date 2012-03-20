@@ -3,7 +3,7 @@ class CreatePotModel < ActiveRecord::Migration
     create_table :pots do |t|
 
       # game
-      t.integer   :amount
+      t.integer   :amount,         :default => 0
       t.integer   :table_id
       t.string    :player_amounts
       t.integer   :highest_bet
