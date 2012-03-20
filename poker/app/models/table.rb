@@ -111,7 +111,7 @@ class Table < ActiveRecord::Base
     end
     self.determineStartingPlayer("")
     player = self.players[self.player_turn]
-    Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
+    player.broadcast
   end
   
   def incrementPlayerTurn
@@ -128,6 +128,10 @@ class Table < ActiveRecord::Base
     end
   end
   
+  def getCurrentPlayer
+    return self.players[self.player_turn]
+  end
+
   def determineStartingPlayer(condition)
     
     if condition == "first"

@@ -141,7 +141,10 @@ module GameLogic
 
   	i = 0
   	while i < 8 do
-  		if players[index].folded == true && index != table.last_raise# || players[index].left_game_at != nil
+  		if players[index].folded == true
+        if index == table.last_raise
+          return "nextRound"
+        end
   			index = (index+1) % 8
   		else 
   			break
