@@ -49,7 +49,7 @@ module GameLogic
       # find out how many people share the pot
       pot.player_amounts.each do |player_id, amount|
         if winningHand.rank == playerHands[player_id].rank
-          ++winners
+          winners += 1
           potWinners[player_id]=0
         end
 
@@ -64,14 +64,14 @@ module GameLogic
 
     potProfits.each do |pot|
       pot.each do |potWinner_id, amount|
-        if winners.key? potWinner_id
+        if results.key? potWinner_id
           results[potWinner_id] += amount
         else
           results[potWinner_id] = amount
         end
       end
     end
-
+    p "-------------||||||||||||||--------" + results.to_s + "---------"
     return results
   end
   
@@ -159,11 +159,16 @@ module GameLogic
   	while i < 8 do
       index = (index+1) % 8
 
-  		if players[index].folded != true && index != table.last_raise
+  		if players[index].folded != true 
+        if index == table.last_raise
+          return "nextRound"
+        end
         break
-  		else 
-  			return "nextRound"
   		end
+
+      if index == table.last_raise
+        return "nextRound"
+      end
 
   	end
 

@@ -39,7 +39,7 @@ class TablesController < ApplicationController
 
     # TODO all in?
 
-    player.amount -= call_amount
+  
     if player.pots.empty?
       pots = player.table.pots
     else
@@ -59,22 +59,12 @@ class TablesController < ApplicationController
     table = player.table
     bet_amount = params[:amount]
     player.last_action = "raised " + bet_amount.to_s
-    player.amount = player.amount - bet_amount.to_i
-    player.save!
+    player.save
+
+    # pots = player.pots
+    pot = Pot.last
     
-    pots = player.pots
-    pot = Pot.new
-    min_players = 10
-    pots.each do |p|
-      if p.players.count < min_players
-          pot = p
-      end
-    end
-    
-    pot.amount = pot.amount + bet_amount.to_i
-    pot.highest_bet += bet_amount.to_i
-    pot.player_amounts[player.id] = pot.getPlayerAmount(player.id) + bet_amount.to_i
-    pot.save!
+    pot.addAmount(player, bet_amount.to_i)
     
     table.doNext
     render :nothing => true

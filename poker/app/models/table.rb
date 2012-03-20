@@ -98,17 +98,27 @@ class Table < ActiveRecord::Base
     self.determineStartingPlayer("first")
     self.takeBlinds
 
-    self.getCurrentPlayer.broadcast  
+    self.broadcast  
   end
   
   def nextRound
     p "---------------------------------------NEXT ROUND----------"
     if self.cards_on_table.blank?
-      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
-      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
-      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+      c = GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << c 
+      self.cards_in_deck.delete(c)
+
+      c = GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << c 
+      self.cards_in_deck.delete(c)
+
+      c = GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << c 
+      self.cards_in_deck.delete(c)
     else
-      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+      c = GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << c 
+      self.cards_in_deck.delete(c)
     end
     self.resetActions
     self.determineStartingPlayer("")
