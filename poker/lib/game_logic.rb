@@ -137,18 +137,17 @@ module GameLogic
   	index = table.player_turn
 
   	players = table.players
-  	index = (index+1) % 8
 
   	i = 0
   	while i < 8 do
-  		if players[index].folded == true
-        if index == table.last_raise
-          return "nextRound"
-        end
-  			index = (index+1) % 8
+      index = (index+1) % 8
+
+  		if players[index].folded != true && index != table.last_raise
+        break
   		else 
-  			break
+  			return "nextRound"
   		end
+
   	end
 
     p "INDEX -------------- " + index.to_s

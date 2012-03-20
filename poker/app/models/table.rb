@@ -17,7 +17,7 @@ class Table < ActiveRecord::Base
         "raise" => true, "callAmount" => 10}
       player = {"id" => p.id, "name" => p.name, "chips" => p.amount, 
         "lastAction" => p.last_action, "possibleActions" => possibleActions}
-
+      p.broadcast
       players << player
     end
     turn = self.player_turn
@@ -29,6 +29,7 @@ class Table < ActiveRecord::Base
 
     result = {"players" => players, "table" => tableHash}
     Juggernaut.publish("#{self.id}", result)
+
     # if not self.changes.length == 1
       # Juggernaut.publish("#{self.id}", self.changes.to_json)
     # end
@@ -110,8 +111,7 @@ class Table < ActiveRecord::Base
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
     end
     self.determineStartingPlayer("")
-    player = self.players[self.player_turn]
-    player.broadcast
+    self.getCurrentPlayer.broadcast
   end
   
   def incrementPlayerTurn
