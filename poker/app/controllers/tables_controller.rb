@@ -1,5 +1,7 @@
 class TablesController < ApplicationController
 
+  include GameLogic
+
   def index
     @tables = Table.all
     render 'index'
@@ -7,27 +9,14 @@ class TablesController < ApplicationController
   def show
     @table = Table.find(params[:id])
   end
-  def bet
-    
-  end
-  
-  def nextPlayerTurn
-    @table.incrementPlayerTurn
-    GameLogic.poassibleActions(@table).publish
-  end
-  
-  
   
   def fold
     player = Player.find(params[:id])
     player.folded = true 
     player.last_action = "folded"
     player.save!
-    
-    @table = player.table
-    @table.player_turn = ((player.id + 1) % @table.players.count)
-    @table.save!
 
+    @table.doNext
     render :nothing => true
   end
   
@@ -39,46 +28,36 @@ class TablesController < ApplicationController
     @table = player.table    
     @table.player_turn = ((player.id + 1) % @table.players.count)
     @table.save!
+    
+    @table.doNext
     render :nothing => true
   end
   
   def raise_bet
     player = Player.find(params[:id])
+    table = player.table
     bet_amount = params[:amount]
-    player.last_action = "raised " + bet_amount
+    player.last_action = "raised " + bet_amount.to_s
     player.amount = player.amount - bet_amount.to_i
     player.save!
     
-    pot = player.table.pots.first
-    # pots = player.pots
-    # pot = Pot.new
-    # max_players = -1
-    # pots.each do |p|
-    #   if p.players.size > max_players
-    #     pot = p
-    #   end
-    # end
+    pots = player.pots
+    pot = Pot.new
+    min_players = 10
+    pots.each do |p|
+      if p.players.count < min_players
+          pot = p
+      end
+    end
     
     pot.amount = pot.amount + bet_amount.to_i
+    pot.highest_bet += bet_amount.to_i
+    pot.player_amounts[player.id] = pot.getPlayerAmount(player.id) + bet_amount.to_i
     pot.save!
     
-    @table = player.table
-    @table.player_turn = ((player.id + 1) % @table.players.count)
-    @table.save!
+    @table.doNext
     render :nothing => true
   end
   
-  def deal
-    @table = Table.find(params[:id])
-    players = @table.players
-    
-    players.each do |p|
-      p.card_1 = "Card " + rand(52).to_s
-      p.card_2 = "Card " + rand(52).to_s
-      p.save!
-    end
-    
-    render :nothing => true
-  end
   
 end

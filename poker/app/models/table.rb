@@ -69,6 +69,18 @@ class Table < ActiveRecord::Base
     Juggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
   end
   
+  def nextRound
+    if self.cards_on_table.blank?
+      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+    else
+      self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
+    end
+    self.determineStartingPlayer
+    player = self.players[self.player_turn]
+    Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
+  end
   
   def incrementPlayerTurn
     startingIndex = self.player_turn + 1
@@ -155,6 +167,18 @@ class Table < ActiveRecord::Base
       else
         smallBlind += 1
       end
+    end
+  end
+  
+  def doNext
+    nextAction = GameLogic.whatsNext(self)
+    if nextAction == "determineWinner"
+      Juggernaut.publish("#{self.id}", GameLogic.determineWinner(self).to_json)
+      self.startHand
+    elsif nextAction == "nextRound"
+      self.nextRound
+    else
+      self.incrementPlayerTurn
     end
   end
 
