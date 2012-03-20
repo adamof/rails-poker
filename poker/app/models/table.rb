@@ -63,6 +63,8 @@ class Table < ActiveRecord::Base
       p.last_action = nil
       p.save!
     end
+    self.cards_on_table = []
+    self.save!
     self.determineStartingPlayer("first")
     self.takeBlinds
     player = self.players[self.player_turn]
@@ -86,7 +88,7 @@ class Table < ActiveRecord::Base
     startingIndex = self.player_turn + 1
     while(true)
       player = self.players[(startingIndex % self.players.count)]
-      if player.left_table_at == nil && player.folded == false
+      if player.left_game_at == nil && player.folded == false
         self.player_turn = startingIndex
         self.save!
         return

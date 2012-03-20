@@ -71,7 +71,7 @@ module GameLogic
     actions = Hash.new
 
     # see if it's the player's turn
-    if table.players[table.player_turn] == player
+    if table.players[table.player_turn] != player
       actions["check"] = false
       actions["call"] = false
       actions["raise"] = false
@@ -137,7 +137,7 @@ module GameLogic
   		return "determineWinner"
   	end	
 
-  	if table.lastRaise == index 
+  	if table.last_raise == index 
   		return "nextRound"
   	end
 

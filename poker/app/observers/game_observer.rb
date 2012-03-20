@@ -1,6 +1,6 @@
 class GameObserver < ActiveRecord::Observer
   
-  observe :table, :pot, :player
+  observe :table
 
   def after_create(entity)
     
@@ -26,7 +26,7 @@ class GameObserver < ActiveRecord::Observer
       players << player
     end
 
-    tableHash = {"playerTurn" => table.players[table.player_turn].id, "button" => table.button, 
+    tableHash = {"playerTurn" => table.players[table.player_turn].id, "button" => table.players[table.button], 
       "tableNumber" => table.id, "blindAmount" => table.blind_amount, 
       "sharedCards" => table.cards_on_table, "pot" => table.getTotalPot}
 
