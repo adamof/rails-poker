@@ -12,11 +12,12 @@ class TablesController < ApplicationController
   
   def fold
     player = Player.find(params[:id])
+    table = player.table
     player.folded = true 
     player.last_action = "folded"
     player.save!
 
-    @table.doNext
+    table.doNext
     render :nothing => true
   end
   
@@ -55,7 +56,7 @@ class TablesController < ApplicationController
     pot.player_amounts[player.id] = pot.getPlayerAmount(player.id) + bet_amount.to_i
     pot.save!
     
-    @table.doNext
+    table.doNext
     render :nothing => true
   end
   
