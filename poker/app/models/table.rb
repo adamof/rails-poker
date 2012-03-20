@@ -109,9 +109,19 @@ class Table < ActiveRecord::Base
     else
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
     end
-    self.determineStartingPlayer("")
+    self.resetActions
+    self.determineStartingPlayer
     player = self.players[self.player_turn]
-    Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
+    player.broadcast
+  end
+  
+  def resetActions
+    self.players.each do |p|
+      if p.left_game_at == nil && p.folded == false
+        p.lastAction = nil
+        p.save!
+      end
+    end
   end
   
   def incrementPlayerTurn
