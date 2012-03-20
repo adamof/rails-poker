@@ -108,7 +108,43 @@ module GameLogic
     end	
 
     return actions
-  end 
+  end
+  
+  def whatsNext(table)
+
+  	index = table.player_turn
+
+  	players = table.players
+  	index = (index+1) % 8
+
+  	i = 0
+  	while i < 8 do
+  		if players[index].folded == true || players[index].left_game_at != nil
+  			index = (index+1) % 8
+  		else 
+  			break
+  		end
+  	end
+
+  	notFolded = 0
+  	players.each do |player|
+  		if player.folded == true || player.left_game_at != nil
+  			notFolded += 1
+  		end
+  	end
+
+  	if (table.cards_on_table.count == 5 && table.lastRaise == index) || notFolded == 1
+  		return "determineWinner"
+  	end	
+
+  	if table.lastRaise == index 
+  		return "nextRound"
+  	end
+
+  	return "nextPlayer"
+
+  end
+   
   
 
 end
