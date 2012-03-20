@@ -178,7 +178,7 @@ class Table < ActiveRecord::Base
     elsif nextAction == "nextRound"
       self.nextRound
     else
-      self.incrementPlayerTurn
+      self.nextPlayerTurn
     end
   end
 
