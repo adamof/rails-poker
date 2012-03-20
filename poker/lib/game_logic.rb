@@ -6,6 +6,20 @@ module GameLogic
   # determine the winner
   def determineWinner(table)
     
+    activePlayers = 0
+    table.players.each do |player|
+      if player.folded == false # || player.left_game_at != nil
+        activePlayers += 1
+      end
+    end
+    if activePlayers == 1 and table.pots.count == 1
+      winner = table.players.where("folded='false'")
+      winner.amount += table.pots.first.amount
+      return {winner.id.to_s => table.pots.first.amount}
+    end
+
+
+
     # arrays for results
     playerHands = {}
     results = {}
@@ -78,7 +92,11 @@ module GameLogic
       return actions
     end
 
-    pots = player.pots
+    if player.pots.empty?
+      pots = player.table.pots
+    else
+      pots = player.pots
+    end
     amount = player.amount
     placedBets = 0
     highestBets = 0
@@ -87,7 +105,6 @@ module GameLogic
     	placedBets = placedBets + pot.getPlayerAmount(player.id)
     	highestBets = highestBets + pot.highest_bet
     end
-
 
     if placedBets == highestBets
     	actions["check"] = true
@@ -107,6 +124,11 @@ module GameLogic
     	actions["raise"] = false
     end	
 
+    p "highest---------------------------------- " + highestBets.to_s
+    p "placed----------------------------------- " + placedBets.to_s
+
+    actions["callAmount"] = highestBets - placedBets
+
     return actions
   end
   
@@ -119,27 +141,28 @@ module GameLogic
 
   	i = 0
   	while i < 8 do
-  		if players[index].folded == true || players[index].left_game_at != nil
+  		if players[index].folded == true && index != table.last_raise# || players[index].left_game_at != nil
   			index = (index+1) % 8
   		else 
   			break
   		end
   	end
 
-  	notFolded = 0
+    p "INDEX -------------- " + index.to_s
+
+  	activePlayers = 0
   	players.each do |player|
-  		if player.folded == true # || player.left_game_at != nil
-  			notFolded += 1
+  		if player.folded == false # || player.left_game_at != nil
+  			activePlayers += 1
   		else
         p player
       end
   	end
-
-  	if (table.cards_on_table.count == 5 && table.last_raise == index) || notFolded == 1
+	
+  	if (table.cards_on_table.count == 5 && table.last_raise == index) || activePlayers == 1
   		return "determineWinner"
   	end	
-
-  	if table.last_raise == index 
+  	if table.last_raise == index+1 
   		return "nextRound"
   	end
 

@@ -23,14 +23,34 @@ class TablesController < ApplicationController
   
   def check
     player = Player.find(params[:id])
+    table = player.table
     player.last_action = "check"
+
+
+    placedBets = 0
+    highestBets = 0
+
+    table.pots.each do |pot| 
+      placedBets = placedBets + pot.getPlayerAmount(player.id)
+      highestBets = highestBets + pot.highest_bet
+    end
+
+    call_amount = highestBets - placedBets
+
+    # TODO all in?
+
+    player.amount -= call_amount
+    if player.pots.empty?
+      pots = player.table.pots
+    else
+      pots = player.pots
+    end
+    pots.last.addAmount(player, call_amount)
+
     player.save!
     
-    @table = player.table    
-    @table.player_turn = ((player.id + 1) % @table.players.count)
-    @table.save!
-    
-    @table.doNext
+    table.doNext
+
     render :nothing => true
   end
   

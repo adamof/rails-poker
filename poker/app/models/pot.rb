@@ -24,6 +24,7 @@ class Pot < ActiveRecord::Base
     self.amount += amount
     player.amount -= amount
     player.save
+    self.highest_bet = self.player_amounts.values.max
     self.save
   end
 

@@ -4,8 +4,36 @@ class Table < ActiveRecord::Base
   has_many    :pots  
   serialize   :cards_on_table
   serialize   :cards_in_deck
+  after_update :broadcast
   
   include GameLogic
+
+  def broadcast
+    # constructing players hash
+    players = []
+    self.players.each do |p|
+      # stub for the possibleActions until the GameLogic is implemented
+      possibleActions = {"check" => false, "call" => true, 
+        "raise" => true, "callAmount" => 10}
+      player = {"id" => p.id, "name" => p.name, "chips" => p.amount, 
+        "lastAction" => p.last_action, "possibleActions" => possibleActions}
+
+      players << player
+    end
+    turn = self.player_turn
+    p "##----#" + turn.to_s + "---------#"
+    tableHash = {"playerTurn" => self.players[turn].id, "button" => self.players[self.button], 
+      "tableNumber" => self.id, "blindAmount" => self.blind_amount, 
+      "sharedCards" => self.cards_on_table, "pot" => self.getTotalPot}
+
+
+    result = {"players" => players, "table" => tableHash}
+    Juggernaut.publish("#{self.id}", result)
+    # if not self.changes.length == 1
+      # Juggernaut.publish("#{self.id}", self.changes.to_json)
+    # end
+
+  end
 
   def playerAdded
     self.startGame if self.players.count==8
@@ -28,8 +56,8 @@ class Table < ActiveRecord::Base
   end
   
   def nextPlayerTurn
-    @table.incrementPlayerTurn
-    Jugggernaut.publish("#{self.id}/#{self.players[self.player_turn].id}", GameLogic.possibleActions(self.players[self.player_turn]).to_json)
+    self.incrementPlayerTurn
+    self.players[self.player_turn].broadcast
   end
   
   def dealDeck
@@ -73,6 +101,7 @@ class Table < ActiveRecord::Base
   end
   
   def nextRound
+    p "---------------------------------------NEXT ROUND----------"
     if self.cards_on_table.blank?
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
@@ -80,7 +109,7 @@ class Table < ActiveRecord::Base
     else
       self.cards_on_table << GameLogic.dealCard(self.cards_in_deck)
     end
-    self.determineStartingPlayer
+    self.determineStartingPlayer("")
     player = self.players[self.player_turn]
     Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
   end
@@ -90,7 +119,7 @@ class Table < ActiveRecord::Base
     while(true)
       player = self.players[(startingIndex % self.players.count)]
       if player.left_game_at == nil && player.folded == false
-        self.player_turn = startingIndex
+        self.player_turn = (startingIndex % self.players.count)
         self.save!
         return
       else
