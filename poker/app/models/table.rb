@@ -15,6 +15,7 @@ class Table < ActiveRecord::Base
     self.blind_amount = 50
     self.button = 0
     self.save
+    # self.startHand
   end
 
   def getTotalPot
