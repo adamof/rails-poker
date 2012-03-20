@@ -52,6 +52,7 @@ class TablesController < ApplicationController
     
     pot.amount = pot.amount + bet_amount.to_i
     pot.highest_bet += bet_amount.to_i
+    pot.player_amounts[player.id] = pot.getPlayerAmount(player.id) + bet_amount.to_i
     pot.save!
     
     @table.doNext
