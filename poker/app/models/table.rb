@@ -48,6 +48,21 @@ class Table < ActiveRecord::Base
     end
   end
   
+  def startHand
+    self.dealDeck
+    self.dealToPlayers
+    self.players.each do |p|
+      p.folded = false
+      p.last_action = nil
+      p.save!
+    end
+    self.determineStartingPlayer("first")
+    self.takeBlinds
+    player = @table.players[@table.player_turn]
+    GameLogic.possibleActions(@table).publish
+  end
+  
+  
   def incrementPlayerTurn
     startingIndex = self.player_turn + 1
     while(true)
@@ -70,9 +85,10 @@ class Table < ActiveRecord::Base
       startingIndex = (self.button + 1)
     end
     while(true)
-      player = self.players[startingIndex]
+      player = self.players[startingIndex % self.players.count]
       if player.active?
         self.player_turn = startingIndex
+        self.last_raise = startinIndex
         self.save!
         return
       else
@@ -83,58 +99,52 @@ class Table < ActiveRecord::Base
   end
   
   def takeBlinds
-    smallBlind = self.button + 1
     pot = Pot.new
     pot.table_id = self.id
-    hash = Hash.new
-    self.players.each do |p|
-      hash[p.id] = p.amount
-    end
-    pot.player_amounts = hash
     pot.save!
     
-        
+    smallBlind = self.button + 1
+    
     while(true)
       player = self.players[smallBlind] % self.players.count
       if player.active?
         if player.amount > (self.blind_amount / 2)
-          player.amount -= (self.blind_amount / 2)
-          pot.player_amounts[player.id] = player.amount
-          player.save!
-          pot.save!
+          pot.addAmount(player, (self.blind_amount / 2))
         else
-          pot.amount += player.amount
-          pot.player_amounts[player.id] = player.amount
-          player.amount = 0
-          
-          player.save!
-          pot.save!
+          pot.addAmount(player, player.amount)
+          second_pot = Pot.new
+          second_pot.table_id = self.id
+          second_pot.save!
         end
         bigBlind = (self.players[smallBlind] + 1) % self.players.count
         while(true)
           player = self.players[bigBlind] % self.players.count
           if player.active?
             if player.amount > self.blind_amount
-              player.amount -= self.blind_amount
-              pot.amount += self.blind_amount
-              pot.player_amounts[player.id] = player.amount
-              player.save!
-              pot.save!
-              return
+              if second_pot == nil
+                pot.addAmount(player, self.blind_amount)
+                return
+              else
+                second_pot.addAmount(player, self.blind_amount)
+                return
+              end
             else
-              pot.amount += player.amount
-              pot.player_amounts[player.id] = player.amount
-              player.amount = 0
-              
-              player.save!
-              pot.save!
+              pot.addAmount(player, player.amount)
+              if second_pot == nil
+                second_pot = Pot.new
+                second_pot.table_id = self.id
+                second_pot.save!
+              else
+                third_pot = Pot.new
+                third_pot.table_id = self.id
+                third_pot.save!
+              end
               return
             end
           else
             bigBlind += 1
           end
-        end  
-          
+        end           
       else
         smallBlind += 1
       end
