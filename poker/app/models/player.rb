@@ -2,6 +2,8 @@ class Player < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable
+  
+  include GameLogic
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :encrypted_password, :pots, :table
@@ -22,8 +24,10 @@ class Player < ActiveRecord::Base
   end
   
   def broadcast
-    Juggernaut.publish("#{self.table_id}/#{self.id}", 
-      "PLAYER --> " + self.changes.to_json)
+    cardsHash = {"card1" => self.card_1, "card2" => self.card_2}
+    actions = GameLogic.possibleActions(self)
+    result = {"cards" => cardsHash, "actions" => actions}
+    Juggernaut.publish("#{self.table_id}/#{self.id}", result.to_json)
   end
   
   def active?

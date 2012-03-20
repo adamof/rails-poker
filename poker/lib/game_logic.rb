@@ -66,9 +66,19 @@ module GameLogic
   end
   
   def possibleActions(player)
-    pots = player.pots
+
     table = player.table
     actions = Hash.new
+
+    # see if it's the player's turn
+    if table.players[table.player_turn] == player
+      actions["check"] = false
+      actions["call"] = false
+      actions["raise"] = false
+      return actions
+    end
+
+    pots = player.pots
     amount = player.amount
     placedBets = 0
     highestBets = 0

@@ -5,6 +5,7 @@ class Table < ActiveRecord::Base
   serialize   :cards_on_table
   serialize   :cards_in_deck
   
+  include GameLogic
 
   def playerAdded
     self.startGame if self.players.count==8
@@ -174,17 +175,15 @@ class Table < ActiveRecord::Base
     end
     def playerJoin(player_id)
       @player = Player.find(player_id)
-      @player.connections += 2
+      @player.connections = 1
       @player.left_game_at = nil
       @player.save
       @player.table.save
     end
     def playerLeave(player_id)
       @player = Player.find(player_id)
-      @player.connections -= 1
-      if @player.connection == 0
-        @player.left_game_at = Time.now
-      end
+      @player.connections = 0
+      @player.left_game_at = Time.now
       @player.save
     end
   end
