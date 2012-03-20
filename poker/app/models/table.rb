@@ -26,6 +26,11 @@ class Table < ActiveRecord::Base
     return result
   end
   
+  def nextPlayerTurn
+    @table.incrementPlayerTurn
+    Jugggernaut.publish("#{self.id}/#{self.player_turn}", GameLogic.possibleActions(self.players[self.player_turn]).to_json)
+  end
+  
   def dealDeck
     @cards_in_deck = []
     Card::SUITS.each_byte do |suit|
@@ -59,8 +64,8 @@ class Table < ActiveRecord::Base
     end
     self.determineStartingPlayer("first")
     self.takeBlinds
-    player = @table.players[@table.player_turn]
-    GameLogic.possibleActions(@table).publish
+    player = self.players[self.player_turn]
+    Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
   end
   
   

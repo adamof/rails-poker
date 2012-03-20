@@ -10,7 +10,7 @@ class Pot < ActiveRecord::Base
   end
 
   def getPlayerAmount(player_id)
-    return self.player_amounts["player_id"] || 0
+    return self.player_amounts[player_id] || 0
   end
 
   def init
