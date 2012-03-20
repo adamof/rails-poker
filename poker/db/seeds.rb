@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
 ["Stefan@uci.edu", "Scott@uci.edu", "Masis@uci.edu", "Michael@uci.edu", 
   "Laurent@uci.edu", "Matan@uci.edu", "Tri@uci.edu", "Milin@uci.edu"].each do |p|
   Player.create!(:email => p, 

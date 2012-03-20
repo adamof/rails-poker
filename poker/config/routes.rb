@@ -10,12 +10,12 @@ Poker::Application.routes.draw do
     get "/signup" => "players#new"
   end
   
-  match '/fold' => 'tables#fold'
-  match '/check' => 'tables#check'
-  match '/raise' => 'tables#raise_bet'
-  match '/deal' => 'tables#deal'
+  match '/fold' => 'tables#fold', :via => :get
+  match '/check' => 'tables#check', :via => :get
+  match '/raise' => 'tables#raise_bet', :via => :get
+  match '/deal' => 'tables#deal', :via => :get
 
-  match '/sign_ajax' => 'players#sign_ajax'
+  match '/sign_ajax' => 'players#sign_ajax', :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

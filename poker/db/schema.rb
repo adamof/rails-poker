@@ -40,12 +40,12 @@ ActiveRecord::Schema.define(:version => 20120313045701) do
   add_index "players_pots", ["pot_id", "player_id"], :name => "index_players_pots_on_pot_id_and_player_id"
 
   create_table "pots", :force => true do |t|
-    t.integer  "amount"
+    t.integer  "amount",         :default => 0
     t.integer  "table_id"
     t.string   "player_amounts"
     t.integer  "highest_bet"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "tables", :force => true do |t|

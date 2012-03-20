@@ -66,7 +66,7 @@ class Table < ActiveRecord::Base
     self.determineStartingPlayer("first")
     self.takeBlinds
     player = self.players[self.player_turn]
-    Jugggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
+    Juggernaut.publish("#{self.id}/#{player.id}", GameLogic.possibleActions(player).to_json)
   end
   
   def nextRound
@@ -119,13 +119,13 @@ class Table < ActiveRecord::Base
   
   def takeBlinds
     pot = Pot.new
-    pot.table_id = self.id
+    pot.table = self
     pot.save!
     
     smallBlind = self.button + 1
     
     while(true)
-      player = self.players[smallBlind] % self.players.count
+      player = self.players[(smallBlind % self.players.count)]
       if player.active?
         if player.amount > (self.blind_amount / 2)
           pot.addAmount(player, (self.blind_amount / 2))
@@ -135,9 +135,9 @@ class Table < ActiveRecord::Base
           second_pot.table_id = self.id
           second_pot.save!
         end
-        bigBlind = (self.players[smallBlind] + 1) % self.players.count
+        bigBlind = (smallBlind + 1) % self.players.count
         while(true)
-          player = self.players[bigBlind] % self.players.count
+          player = self.players[bigBlind % self.players.count]
           if player.active?
             if player.amount > self.blind_amount
               if second_pot == nil
