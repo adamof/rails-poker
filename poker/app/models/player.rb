@@ -21,6 +21,7 @@ class Player < ActiveRecord::Base
       self.table = t
     elsif Table.last.players.count < 8
       self.table = Table.last
+      Table.last.save
     else
       t = Table.new
       t.save

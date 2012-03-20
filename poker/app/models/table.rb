@@ -16,7 +16,7 @@ class Table < ActiveRecord::Base
     self.blind_amount = 50
     self.button = 0
     self.save
-    # self.startHand
+    self.startHand
   end
 
   def getTotalPot
@@ -49,7 +49,7 @@ class Table < ActiveRecord::Base
       p.card_1 = GameLogic.dealCard(self.cards_in_deck)
       self.cards_in_deck.delete(p.card_1)
       p.card_2 = GameLogic.dealCard(self.cards_in_deck)
-      self.card_in_deck.delete(p.card_2)
+      self.cards_in_deck.delete(p.card_2)
       p.save!
       self.save!
     end
