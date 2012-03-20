@@ -11,21 +11,6 @@ class TablesController < ApplicationController
     
   end
   
-  def startHand
-    @table = Table.find(params[:id])
-    @table.dealDeck
-    @table.dealToPlayers
-    @table.players.each do |p|
-      p.folded = false
-      p.last_action = nil
-      p.save!
-    end
-    @table.determineStartingPlayer("first")
-    @table.takeBlinds
-    player = @table.players[@table.player_turn]
-    GameLogic.possibleActions(@table).publish
-  end
-  
   def nextPlayerTurn
     @table.incrementPlayerTurn
     GameLogic.poassibleActions(@table).publish

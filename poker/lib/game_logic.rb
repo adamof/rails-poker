@@ -58,5 +58,47 @@ module GameLogic
 
     return results
   end
+  
+  def dealCard(cardsInDeck)
+  	cardIndex = rand(cardsInDeck.length)
+  	card = cardsInDeck[cardIndex]
+  	return card
+  end
+  
+  def possibleActions(player)
+    pots = player.pots
+    table = player.table
+    actions = Hash.new
+    amount = player.amount
+    placedBets = 0
+    highestBets = 0
+
+    pots.each do |pot| 
+    	placedBets = placedBets + pot.getPlayerAmount(player.id)
+    	highestBets = highestBets + pot.highest_bet
+    end
+
+
+    if placedBets == highestBets
+    	actions["check"] = true
+    else
+    	actions["check"] = false
+    end
+
+    if amount <= 0 
+    	actions["call"] = false
+    else
+    	actions["call"] = true
+    end
+
+    if (highestBets - placedBets) < amount
+    	actions["raise"] = true
+    else 
+    	actions["raise"] = false
+    end	
+
+    return actions
+  end 
+  
 
 end
