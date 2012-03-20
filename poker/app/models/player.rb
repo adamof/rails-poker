@@ -21,7 +21,11 @@ class Player < ActiveRecord::Base
     self.table.playerAdded
   end
   
-  def broadcast    
+  def broadcast
+    if self.connection == 0
+      self.left_game_at = Time.now
+      self.save
+    end
     Juggernaut.publish("#{self.table_id}/#{self.id}", 
       "PLAYER --> " + self.changes.to_json)
   end
