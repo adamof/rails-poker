@@ -5,11 +5,10 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-Table.create()
 
 ["Stefan@uci.edu", "Scott@uci.edu", "Masis@uci.edu", "Michael@uci.edu", 
   "Laurent@uci.edu", "Matan@uci.edu", "Tri@uci.edu", "Milin@uci.edu"].each do |p|
-  Player.create(:email => p, 
-    :encrypted_password => "$2a$10$FKRtfcD./rtWcED/v4jxDOwvRs4YKnUa5CP6GW4z9eqIMkqxBidUy",)
+  Player.create!(:email => p, 
+    :encrypted_password => "$2a$10$FKRtfcD./rtWcED/v4jxDOwvRs4YKnUa5CP6GW4z9eqIMkqxBidUy")
 end
 
