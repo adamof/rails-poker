@@ -119,7 +119,7 @@ class Table < ActiveRecord::Base
   
   def takeBlinds
     pot = Pot.new
-    pot.table_id = self.id
+    pot.table = self
     pot.save!
     
     smallBlind = self.button + 1
